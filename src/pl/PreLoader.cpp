@@ -87,42 +87,10 @@ void loadRawLibraries() {
     }
 }
 
-bool loadLeviLamina() {
-    if (!exists(path("LeviLamina.dll"))) return false;
-    return loadLibrary("LeviLamina.dll");
-}
-
-void setup() {
-    if (exists(path(".\\plugins\\preload.conf"))) {
-        std::ifstream dllList(".\\plugins\\preload.conf");
-        if (dllList) {
-            std::string dllName;
-            while (getline(dllList, dllName)) {
-                if (dllName.back() == '\n') dllName.pop_back();
-                if (dllName.back() == '\r') dllName.pop_back();
-
-                if (dllName.empty() || dllName.front() == '#') continue;
-                std::cout << "Preload: " << dllName << std::endl;
-                loadLibrary(dllName);
-                preloadList.insert(dllName);
-            }
-            dllList.close();
-        }
-    } else {
-        std::ofstream dllList(".\\plugins\\preload.conf");
-        dllList.close();
-    }
-    if (!loadLeviLamina()) {
-        Warn("LeviLamina not found, PreLoader is running as DLL Loader...");
-        loadRawLibraries();
-    }
-}
-
 void init() {
     loadLoggerConfig();
     addLibraryToPath();
     pl::symbol_provider::init();
-    setup();
 }
 } // namespace pl
 
