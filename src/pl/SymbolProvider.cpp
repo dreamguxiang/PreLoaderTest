@@ -51,7 +51,6 @@ void testFuncMap() {
 }
 
 void initFastDlsym(const PDB::RawFile& rawPdbFile, const PDB::DBIStream& dbiStream) {
-    Info("Loading symbols from pdb...");
     funcMap                                          = new phmap::flat_hash_map<string, int, ap_hash>;
     const PDB::ImageSectionStream imageSectionStream = dbiStream.CreateImageSectionStream(rawPdbFile);
     const PDB::CoalescedMSFStream symbolRecordStream = dbiStream.CreateSymbolRecordStream(rawPdbFile);
@@ -93,12 +92,10 @@ void initFastDlsym(const PDB::RawFile& rawPdbFile, const PDB::DBIStream& dbiStre
     }
     fastDlsymState = true;
     testFuncMap();
-    Info("Fast Dlsym Loaded <{}>", funcMap->size());
     fflush(stdout);
 }
 
 void initReverseLookup() {
-    Info("Loading Reverse Lookup Table");
     rvaMap = new unordered_multimap<int, string*>(funcMap->size());
     for (auto& pair : *funcMap) { rvaMap->insert({pair.second, (string*)&pair.first}); }
 }
