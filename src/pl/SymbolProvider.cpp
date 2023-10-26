@@ -104,7 +104,7 @@ namespace pl::symbol_provider {
 
 void init() {
     if (initialized) return;
-    const wchar_t* const pdbPath = LR"(../../bedrock_server.pdb)";
+    const wchar_t* const pdbPath = LR"(./bedrock_server.pdb)";
     MemoryFile           pdbFile = MemoryFile::Open(pdbPath);
     if (!pdbFile.baseAddress) {
         Error("bedrock_server.pdb not found");
